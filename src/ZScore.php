@@ -108,8 +108,8 @@ class ZScore implements Serializable
      */
     public function add($point): int
     {
-        // Calculate signal for the incoming point
-        return $this->calcSignal($point, $this->len);
+        $this->data[] = $point;
+        return $this->calcSignal($point, $this->len++);
     }
 
     /**

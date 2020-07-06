@@ -93,7 +93,7 @@ class ZScoreTest extends TestCase
         $this->assertSame(0, $zScore->add($add[8]));
         $this->assertSame(0, $zScore->add($add[9]));
 
-        $this->assertSame(3766, strlen($serialized));
+        $this->assertSame(4003, strlen($serialized));
     }
 
     /** @test */
