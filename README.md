@@ -1,4 +1,4 @@
-# PHP smoothed peak detection algorithm (zScore)
+# PHP smoothed peak detection algorithm (ZScore)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gtjamesa/php-zscore.svg?style=flat-square)](https://packagist.org/packages/gtjamesa/php-zscore)
 [![Total Downloads](https://img.shields.io/packagist/dt/gtjamesa/php-zscore.svg?style=flat-square)](https://packagist.org/packages/gtjamesa/php-zscore)
@@ -15,9 +15,15 @@ composer require gtjamesa/php-zscore
 
 ## Usage
 
-Parameters to configure the algorithm can optionally be specified as the second parameter when creating the object.
+Parameters to configure the algorithm can be set using a fluent interface, or optionally be specified as the second parameter when creating the object.
 
 ``` php
+// Create object using fluent interface
+$zScore = (new ZScore($this->data))->lag(30)
+            ->threshold(5)
+            ->influence(0);
+
+// Create object using options as an array
 $zScore = new ZScore($data, [
     'lag'       => 30,
     'threshold' => 5,

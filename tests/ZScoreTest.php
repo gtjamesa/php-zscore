@@ -32,6 +32,19 @@ class ZScoreTest extends TestCase
     }
 
     /** @test */
+    public function can_set_options_with_fluent_interface(): void
+    {
+        $zScore = new ZScore($this->data);
+
+        $result = $zScore->lag(30)
+            ->threshold(5)
+            ->influence(0)
+            ->calculate();
+
+        $this->assertSame($this->expected, $result);
+    }
+
+    /** @test */
     public function can_add_to_previous_results(): void
     {
         // Supply first 64 points

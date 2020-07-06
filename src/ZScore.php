@@ -13,6 +13,7 @@ use Serializable;
 class ZScore implements Serializable
 {
     private array $data;
+
     private int $len;
     private int $lag;
     private float $threshold;
@@ -112,17 +113,6 @@ class ZScore implements Serializable
         return $this->calcSignal($point, $this->len++);
     }
 
-    /**
-     * Disables serialising the original dataset
-     *
-     * @return \JamesAusten\PhpZscore\ZScore
-     */
-    public function shrink(): ZScore
-    {
-        $this->shrink = true;
-        return $this;
-    }
-
     private function mergeOptions(array $options): void
     {
         $options = array_merge($this->defaultOptions, $options);
@@ -174,5 +164,49 @@ class ZScore implements Serializable
         $this->avgFilter = $data['avgFilter'];
         $this->stdFilter = $data['stdFilter'];
         $this->filteredY = $data['filteredY'];
+    }
+
+    /**
+     * Disables serialising the original dataset
+     *
+     * @return \JamesAusten\PhpZscore\ZScore
+     */
+    public function shrink(): ZScore
+    {
+        $this->shrink = true;
+        return $this;
+    }
+
+    /**
+     * @param int $lag
+     *
+     * @return \JamesAusten\PhpZscore\ZScore
+     */
+    public function lag(int $lag): ZScore
+    {
+        $this->lag = $lag;
+        return $this;
+    }
+
+    /**
+     * @param float $threshold
+     *
+     * @return \JamesAusten\PhpZscore\ZScore
+     */
+    public function threshold(float $threshold): ZScore
+    {
+        $this->threshold = $threshold;
+        return $this;
+    }
+
+    /**
+     * @param float $influence
+     *
+     * @return \JamesAusten\PhpZscore\ZScore
+     */
+    public function influence(float $influence): ZScore
+    {
+        $this->influence = $influence;
+        return $this;
     }
 }
