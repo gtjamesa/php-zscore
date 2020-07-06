@@ -19,20 +19,20 @@ Parameters to configure the algorithm can be set using a fluent interface, or op
 
 ``` php
 // Create object using fluent interface
-$zScore = (new ZScore($this->data))->lag(30)
-            ->threshold(5)
-            ->influence(0);
+$zScore = (new ZScore())->lag(30)
+    ->threshold(5)
+    ->influence(0);
 
 // Create object using options as an array
-$zScore = new ZScore($data, [
+$zScore = new ZScore([
     'lag'       => 30,
     'threshold' => 5,
     'influence' => 0,
 ]);
 
-// Calculate peak signals for the given dataset
+// Calculate peak signals for the supplied dataset
 // Returns [0, 1, 0, 0, ..., -1, 0, 0, 1]
-$results = $zScore->calculate();
+$results = $zScore->calculate($data);
 ```
 
 The algorithm will iterate the entire supplied dataset on first calculation. This will be inefficient to run on a real-time stream of incoming data, as it will recalculate every signal for the dataset. 

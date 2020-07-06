@@ -32,20 +32,22 @@ class ZScore implements Serializable
         'influence' => 0.5,
     ];
 
-    public function __construct($data, array $options = [])
+    public function __construct(array $options = [])
     {
-        $this->data = $data;
-
         $this->mergeOptions($options);
     }
 
     /**
      * Calculate all signals for a given dataset
      *
+     * @param array $data
+     *
      * @return array
      */
-    public function calculate(): array
+    public function calculate(array $data): array
     {
+        $this->data = $data;
+
         $this->len = count($this->data);
         $lagData = array_slice($this->data, 0, $this->lag);
 
@@ -124,7 +126,6 @@ class ZScore implements Serializable
 
     /**
      * Serialize object, optionally ignoring original supplied data as it is redundant for future calculations
-     *
      * To reduce the size of the serialized, call the `shrink` method
      *      serialize($zScore->shrink())
      *

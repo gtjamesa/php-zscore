@@ -18,13 +18,13 @@ class ZScoreTest extends TestCase
     /** @test */
     public function can_calculate_zscores_30l_5t_0i(): void
     {
-        $zScore = new ZScore($this->data, [
+        $zScore = new ZScore([
             'lag'       => 30,
             'threshold' => 5,
             'influence' => 0,
         ]);
 
-        $result = $zScore->calculate();
+        $result = $zScore->calculate($this->data);
 
 //        $this->printDataTable($result);
 
@@ -34,12 +34,12 @@ class ZScoreTest extends TestCase
     /** @test */
     public function can_set_options_with_fluent_interface(): void
     {
-        $zScore = new ZScore($this->data);
+        $zScore = new ZScore();
 
         $result = $zScore->lag(30)
             ->threshold(5)
             ->influence(0)
-            ->calculate();
+            ->calculate($this->data);
 
         $this->assertSame($this->expected, $result);
     }
@@ -48,17 +48,13 @@ class ZScoreTest extends TestCase
     public function can_add_to_previous_results(): void
     {
         // Supply first 64 points
-        $zScore = new ZScore(array_slice($this->data, 0, -10), [
-            'lag'       => 30,
-            'threshold' => 5,
-            'influence' => 0,
-        ]);
+        $zScore = (new ZScore())->lag(30)->threshold(5)->influence(0);
 
         // Gather the final 4 points
         $add = array_slice($this->data, -10);
 
         // Run initial calculation
-        $zScore->calculate();
+        $zScore->calculate(array_slice($this->data, 0, -10));
 
         // Assert that adding the final 10 points provides the same expected signals
         $this->assertSame(0, $zScore->add($add[0]));
@@ -77,17 +73,13 @@ class ZScoreTest extends TestCase
     public function can_reserialize_and_continue_functioning(): void
     {
         // Supply first 64 points
-        $zScore = new ZScore(array_slice($this->data, 0, -10), [
-            'lag'       => 30,
-            'threshold' => 5,
-            'influence' => 0,
-        ]);
+        $zScore = (new ZScore())->lag(30)->threshold(5)->influence(0);
 
         // Gather the final 4 points
         $add = array_slice($this->data, -10);
 
         // Run initial calculation
-        $zScore->calculate();
+        $zScore->calculate(array_slice($this->data, 0, -10));
 
         // Assert that adding the final 10 points provides the same expected signals
         $this->assertSame(0, $zScore->add($add[0]));
@@ -113,15 +105,11 @@ class ZScoreTest extends TestCase
     public function can_reserialize_shrinked_object(): void
     {
         // Supply first 64 points
-        $zScore = new ZScore(array_slice($this->data, 0, -10), [
-            'lag'       => 30,
-            'threshold' => 5,
-            'influence' => 0,
-        ]);
+        $zScore = (new ZScore())->lag(30)->threshold(5)->influence(0);
 
         $add = array_slice($this->data, -10);
 
-        $zScore->calculate();
+        $zScore->calculate(array_slice($this->data, 0, -10));
 
         $serialized = serialize($zScore->shrink());
         $zScore = unserialize($serialized);
