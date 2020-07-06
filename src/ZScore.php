@@ -2,13 +2,15 @@
 
 namespace JamesAusten\PhpZscore;
 
+use Serializable;
+
 /**
  * Implementation of Jean-Paul's ZSCORE algorithm
  *
  * @see     https://stackoverflow.com/a/22640362/6029703
  * @package JamesAusten\PhpZscore
  */
-class ZScore
+class ZScore implements Serializable
 {
     private array $data;
     private int $len;
@@ -20,6 +22,8 @@ class ZScore
     private array $avgFilter;
     private array $stdFilter;
     private array $filteredY;
+
+    private bool $shrink = false;
 
     private array $defaultOptions = [
         'lag'       => 5,
@@ -104,8 +108,8 @@ class ZScore
      */
     public function add($point): int
     {
-        $this->data[] = $point;
-        return $this->calcSignal($point, $this->len++);
+        // Calculate signal for the incoming point
+        return $this->calcSignal($point, $this->len);
     }
 
     /**
@@ -130,6 +134,7 @@ class ZScore
 
     /**
      * Serialize object, optionally ignoring original supplied data as it is redundant for future calculations
+     *
      * To reduce the size of the serialized, call the `shrink` method
      *      serialize($zScore->shrink())
      *

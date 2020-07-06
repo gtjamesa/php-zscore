@@ -60,6 +60,64 @@ class ZScoreTest extends TestCase
         $this->assertSame(0, $zScore->add($add[9]));
     }
 
+    /** @test */
+    public function can_reserialize_and_continue_functioning(): void
+    {
+        // Supply first 64 points
+        $zScore = new ZScore(array_slice($this->data, 0, -10), [
+            'lag'       => 30,
+            'threshold' => 5,
+            'influence' => 0,
+        ]);
+
+        // Gather the final 4 points
+        $add = array_slice($this->data, -10);
+
+        // Run initial calculation
+        $zScore->calculate();
+
+        // Assert that adding the final 10 points provides the same expected signals
+        $this->assertSame(0, $zScore->add($add[0]));
+        $this->assertSame(0, $zScore->add($add[1]));
+        $this->assertSame(0, $zScore->add($add[2]));
+        $this->assertSame(1, $zScore->add($add[3]));
+
+        $serialized = serialize($zScore);
+        unset($zScore); // Clear object from memory
+        $zScore = unserialize($serialized);
+
+        $this->assertSame(1, $zScore->add($add[4]));
+        $this->assertSame(1, $zScore->add($add[5]));
+        $this->assertSame(1, $zScore->add($add[6]));
+        $this->assertSame(0, $zScore->add($add[7]));
+        $this->assertSame(0, $zScore->add($add[8]));
+        $this->assertSame(0, $zScore->add($add[9]));
+
+        $this->assertSame(3766, strlen($serialized));
+    }
+
+    /** @test */
+    public function can_reserialize_shrinked_object(): void
+    {
+        // Supply first 64 points
+        $zScore = new ZScore(array_slice($this->data, 0, -10), [
+            'lag'       => 30,
+            'threshold' => 5,
+            'influence' => 0,
+        ]);
+
+        $add = array_slice($this->data, -10);
+
+        $zScore->calculate();
+
+        $serialized = serialize($zScore->shrink());
+        $zScore = unserialize($serialized);
+
+        $this->assertSame(0, $zScore->add($add[0]));
+
+        $this->assertSame(3081, strlen($serialized));
+    }
+
     private function printDataTable($result): void
     {
         echo "i\tData\tSignal\n----------------------\n";
