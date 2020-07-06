@@ -1,0 +1,46 @@
+{
+    "name": "gtjamesa/php-zscore",
+    "description": "Smoothed z-score peak detection algorithm (https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362)",
+    "keywords": [
+        "gtjamesa",
+        "php-zscore"
+    ],
+    "homepage": "https://github.com/gtjamesa/php-zscore",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "James",
+            "email": "aus.james@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Jean-Paul van Brakel",
+            "role": "Algorithm creator"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JamesAusten\\PhpZscore\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JamesAusten\\PhpZscore\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
