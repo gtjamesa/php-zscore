@@ -2,8 +2,8 @@
     "name": "gtjamesa/php-zscore",
     "description": "Smoothed z-score peak detection algorithm (https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362)",
     "keywords": [
-        "gtjamesa",
-        "php-zscore"
+        "php-zscore",
+        "zscore"
     ],
     "homepage": "https://github.com/gtjamesa/php-zscore",
     "license": "MIT",
